@@ -1,8 +1,8 @@
+import { CreateCryptoMarketDto } from '@crypto-market/dto/create-crypto-market.dto';
+import { SIGNAL } from '@crypto-market/enums/signal.enum';
+import { TREND } from '@crypto-market/enums/trend.enum';
+import { CoinGeckoCryptoResponse } from '@crypto-market/interfaces/coin-gecko-crypto.response';
 import { crypto_market } from '@prisma/client';
-import { CreateCryptoMarketDto } from '../dto/create-crypto-market.dto';
-import { SIGNAL } from '../enums/signal.enum';
-import { TREND } from '../enums/trend.enum';
-import { CoinGeckoCryptoResponse } from '../interfaces/coin-gecko-crypto.response';
 
 export const coinGeckoToCryptoMarketMapper = (
   coinGeckoCrypto: CoinGeckoCryptoResponse,

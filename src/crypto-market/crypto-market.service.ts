@@ -3,10 +3,10 @@ import {
   InternalServerErrorException,
   Logger,
 } from '@nestjs/common';
-import { FiltersDto } from 'src/common/dtos/filters.dto';
+import { Cron } from '@nestjs/schedule';
 import { CryptoMarketRepository } from './crypto-market.repository';
 import { CreateCryptoMarketDto } from './dto/create-crypto-market.dto';
-import { Cron } from '@nestjs/schedule';
+import { CryptoMarketQueryDto } from './dto/crypto-market-query.dto';
 
 @Injectable()
 export class CryptoMarketService {
@@ -28,12 +28,12 @@ export class CryptoMarketService {
     }
   }
 
-  public findAll(filters: FiltersDto) {
-    return this.cryptoMarketRepository.findAll(filters);
+  public findAll(query: CryptoMarketQueryDto) {
+    return this.cryptoMarketRepository.findAll(query);
   }
 
-  public getHistoryCryptoMarketByTag(tag: string) {
-    return this.cryptoMarketRepository.getHistoryCryptoMarketByTag(tag);
+  public findByTag(tag: string) {
+    return this.cryptoMarketRepository.findByTag(tag);
   }
 
   public async deleteAll() {

@@ -1,11 +1,11 @@
+import { AxiosAdapter } from '@common/adapters/axios.adapter';
+import { ApiResponse } from '@common/interfaces/api-response.interface';
+import { DatabaseService } from '@database/database.service';
 import { Injectable, Logger } from '@nestjs/common';
 import { crypto_market, Prisma } from '@prisma/client';
-import { FiltersDto } from 'src/common/dtos/filters.dto';
-import { ApiResponse } from 'src/common/interfaces/api-response.interface';
-import { DatabaseService } from 'src/database/database.service';
 import { CreateCryptoMarketDto } from './dto/create-crypto-market.dto';
+import { CryptoMarketQueryDto } from './dto/crypto-market-query.dto';
 import { CoinGeckoCryptoResponse } from './interfaces/coin-gecko-crypto.response';
-import { AxiosAdapter } from 'src/common/adapters/axios.adapter';
 import { coinGeckoToCryptoMarketMapper } from './utils/coin-gecko-to-crypto-market.mapper';
 
 @Injectable()
@@ -22,10 +22,10 @@ export class CryptoMarketRepository {
   }
 
   public async findAll(
-    filters: FiltersDto,
+    query: CryptoMarketQueryDto,
   ): Promise<ApiResponse<crypto_market[]>> {
     try {
-      const { page = 1, limit = 5, ...rest } = filters;
+      const { page = 1, limit = 5, ...rest } = query;
       const skip = (page - 1) * limit;
 
       const where: Prisma.crypto_marketWhereInput = {
@@ -79,7 +79,7 @@ export class CryptoMarketRepository {
     }
   }
 
-  public getHistoryCryptoMarketByTag(tag: string): Promise<crypto_market[]> {
+  public findByTag(tag: string): Promise<crypto_market[]> {
     return this.databaseService.crypto_market.findMany({
       where: {
         tag,
@@ -156,8 +156,11 @@ export class CryptoMarketRepository {
            * The map is used to compare new data with existing records.
            */
           const mapPreviousCrypto = new Map(
-            previousCryptos.map((c) => [c.tag, c]),
+            previousCryptos.map((c) => [c.tag, c] as [string, typeof c]),
           );
+          // const mapPreviousCrypto = new Map(
+          //   previousCryptos.map((c) => [c.tag, c] as [string, typeof c]),
+          // );
 
           /**
            * Creates a new crypto market record for each cryptocurrency in the response.

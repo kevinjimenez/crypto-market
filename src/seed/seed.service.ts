@@ -1,8 +1,8 @@
+import { AxiosAdapter } from '@common/adapters/axios.adapter';
+import { CryptoMarketService } from '@crypto-market/crypto-market.service';
+import { CoinGeckoCryptoResponse } from '@crypto-market/interfaces/coin-gecko-crypto.response';
+import { coinGeckoToCryptoMarketMapper } from '@crypto-market/utils/coin-gecko-to-crypto-market.mapper';
 import { Injectable } from '@nestjs/common';
-import { AxiosAdapter } from '../common/adapters/axios.adapter';
-import { CryptoMarketService } from '../crypto-market/crypto-market.service';
-import { CoinGeckoCryptoResponse } from '../crypto-market/interfaces/coin-gecko-crypto.response';
-import { coinGeckoToCryptoMarketMapper } from '../crypto-market/utils/coin-gecko-to-crypto-market.mapper';
 
 @Injectable()
 export class SeedService {

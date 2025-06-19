@@ -1,8 +1,8 @@
+import { CommonModule } from '@common/common.module';
 import { Module } from '@nestjs/common';
-import { CryptoMarketService } from './crypto-market.service';
 import { CryptoMarketController } from './crypto-market.controller';
 import { CryptoMarketRepository } from './crypto-market.repository';
-import { CommonModule } from 'src/common/common.module';
+import { CryptoMarketService } from './crypto-market.service';
 
 @Module({
   imports: [CommonModule],
