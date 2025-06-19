@@ -4,11 +4,11 @@ import { CommonModule } from './common/common.module';
 import { EnvConfiguration } from './common/config/env.config';
 import { JoiValidationSchema } from './common/config/joi.validation';
 import { LoggerMiddleware } from './common/middlewares/logger.middleware';
-import { CryptoCurrencyModule } from './crypto-currency/crypto-currency.module';
 import { DatabaseModule } from './database/database.module';
 import { HealthModule } from './health/health.module';
 import { SeedModule } from './seed/seed.module';
 import { ScheduleModule } from '@nestjs/schedule';
+import { CryptoMarketModule } from './crypto-market/crypto-market.module';
 
 @Module({
   imports: [
@@ -21,7 +21,7 @@ import { ScheduleModule } from '@nestjs/schedule';
     HealthModule,
     DatabaseModule,
     SeedModule,
-    CryptoCurrencyModule,
+    CryptoMarketModule,
   ],
 })
 export class AppModule implements NestModule {

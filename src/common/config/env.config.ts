@@ -6,5 +6,5 @@ export const EnvConfiguration = () => ({
   dbPort: parseInt(process.env.DB_PORT ?? '5433', 10),
   dbUsername: process.env.DB_USERNAME,
   dbPassword: process.env.DB_PASSWORD,
-  coinApi: process.env.COIN_API,
+  coingeckoApi: process.env.COINGECKO_API,
 });

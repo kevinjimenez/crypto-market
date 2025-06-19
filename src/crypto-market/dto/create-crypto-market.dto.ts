@@ -1,6 +1,6 @@
-import { IsBoolean, IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsNotEmpty, IsString, IsNumber, IsBoolean } from 'class-validator';
 
-export class CreateCryptoCurrencyDto {
+export class CreateCryptoMarketDto {
   @IsNotEmpty()
   @IsString()
   name: string;
@@ -15,15 +15,15 @@ export class CreateCryptoCurrencyDto {
 
   @IsNotEmpty()
   @IsNumber()
-  currentPrice: number;
+  current_price: number;
 
   @IsNotEmpty()
   @IsNumber()
-  high1h: number;
+  high_1h: number;
 
   @IsNotEmpty()
   @IsNumber()
-  low1h: number;
+  low_1h: number;
 
   @IsNotEmpty()
   @IsNumber()
@@ -39,7 +39,7 @@ export class CreateCryptoCurrencyDto {
 
   @IsNotEmpty()
   @IsBoolean()
-  isCurrent: boolean;
+  is_current: boolean;
 
   @IsNotEmpty()
   @IsString()

@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 import { CommonModule } from 'src/common/common.module';
-import { CryptoCurrencyModule } from 'src/crypto-currency/crypto-currency.module';
+import { CryptoMarketModule } from 'src/crypto-market/crypto-market.module';
 import { SeedController } from './seed.controller';
 import { SeedService } from './seed.service';
 
 @Module({
-  imports: [CommonModule, CryptoCurrencyModule],
+  imports: [CommonModule, CryptoMarketModule],
   controllers: [SeedController],
   providers: [SeedService],
 })

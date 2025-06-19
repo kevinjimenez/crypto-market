@@ -1,62 +1,86 @@
 import { Injectable } from '@nestjs/common';
-import { CreateCryptoCurrencyDto } from 'src/crypto-currency/dto/create-crypto-currency.dto';
 import { AxiosAdapter } from '../common/adapters/axios.adapter';
-import { CryptoCurrencyService } from '../crypto-currency/crypto-currency.service';
-import { type CryptoResponse } from './interfaces/crypto.response';
-import { Cron } from '@nestjs/schedule';
+import { CryptoMarketService } from '../crypto-market/crypto-market.service';
+import { CoinGeckoCryptoResponse } from '../crypto-market/interfaces/coin-gecko-crypto.response';
+import { coinGeckoToCryptoMarketMapper } from '../crypto-market/utils/coin-gecko-to-crypto-market.mapper';
+// import { Cron } from '@nestjs/schedule';
 
 @Injectable()
 export class SeedService {
   constructor(
     private readonly http: AxiosAdapter,
-    private readonly cryptoCurrencyService: CryptoCurrencyService,
+    private readonly cryptoMarketService: CryptoMarketService,
   ) {}
 
+  // public async executeSeed() {
+  //   const cryptosToCreate: CreateCryptoCurrencyDto[] = [];
+  //   await this.cryptoCurrencyService.moveToHistory();
+
+  //   const data = await this.http.get<CryptoResponse[]>(
+  //     process.env.COINGECKO_API ?? '',
+  //   );
+
+  //   for (const crypto of data) {
+  //     const lastCrypto = await this.cryptoCurrencyService.getLastCryptoCurrency(
+  //       crypto.id,
+  //     );
+
+  //     const newCrypto = new CreateCryptoCurrencyDto();
+  //     newCrypto.trend = lastCrypto?.trend ?? 'same';
+  //     newCrypto.high_1h = lastCrypto?.high_1h ?? crypto.current_price;
+  //     newCrypto.low_1h = lastCrypto?.low_1h ?? crypto.current_price;
+
+  //     if (lastCrypto && crypto.current_price === lastCrypto.current_price) {
+  //       newCrypto.trend = 'same';
+  //     } else if (
+  //       lastCrypto &&
+  //       crypto.current_price > lastCrypto.current_price
+  //     ) {
+  //       newCrypto.trend = 'up';
+  //       newCrypto.high_1h = crypto.current_price;
+  //     } else if (
+  //       lastCrypto &&
+  //       crypto.current_price < lastCrypto.current_price
+  //     ) {
+  //       newCrypto.trend = 'down';
+  //       newCrypto.low_1h = crypto.current_price;
+  //     }
+
+  //     newCrypto.name = crypto.name;
+  //     newCrypto.image = crypto.image;
+  //     newCrypto.symbol = crypto.symbol;
+  //     newCrypto.current_price = crypto.current_price;
+
+  //     const avg = (newCrypto.high_1h + newCrypto.low_1h) / 2;
+  //     newCrypto.avg = avg;
+
+  //     newCrypto.signal = crypto.current_price > avg ? 'B' : 'S';
+  //     newCrypto.tag = crypto.id;
+  //     newCrypto.is_current = true;
+  //     cryptosToCreate.push(newCrypto);
+  //   }
+
+  //   await this.cryptoCurrencyService.createMany(cryptosToCreate);
+
+  //   return 'Seed executed';
+  // }
+
   public async executeSeed() {
-    const cryptosToCreate: CreateCryptoCurrencyDto[] = [];
-    await this.cryptoCurrencyService.moveToHistory();
-
-    const data = await this.http.get<CryptoResponse[]>(
-      process.env.COIN_API ?? '',
-    );
-
-    for (const crypto of data) {
-      const lastCrypto = await this.cryptoCurrencyService.getLastCryptoCurrency(
-        crypto.id,
+    try {
+      const data = await this.http.get<CoinGeckoCryptoResponse[]>(
+        process.env.COINGECKO_API ?? '',
       );
 
-      const newCrypto = new CreateCryptoCurrencyDto();
-      newCrypto.trend = lastCrypto?.trend ?? 'same';
-      newCrypto.high1h = lastCrypto?.high1h ?? crypto.current_price;
-      newCrypto.low1h = lastCrypto?.low1h ?? crypto.current_price;
+      const cryptos = data.map((crypto) =>
+        coinGeckoToCryptoMarketMapper(crypto),
+      );
 
-      if (lastCrypto && crypto.current_price === lastCrypto.currentPrice) {
-        newCrypto.trend = 'same';
-      } else if (lastCrypto && crypto.current_price > lastCrypto.currentPrice) {
-        newCrypto.trend = 'up';
-        newCrypto.high1h = crypto.current_price;
-      } else if (lastCrypto && crypto.current_price < lastCrypto.currentPrice) {
-        newCrypto.trend = 'down';
-        newCrypto.low1h = crypto.current_price;
-      }
-
-      newCrypto.name = crypto.name;
-      newCrypto.image = crypto.image;
-      newCrypto.symbol = crypto.symbol;
-      newCrypto.currentPrice = crypto.current_price;
-
-      const avg = (newCrypto.high1h + newCrypto.low1h) / 2;
-      newCrypto.avg = avg;
-
-      newCrypto.signal = crypto.current_price > avg ? 'B' : 'S';
-      newCrypto.tag = crypto.id;
-      newCrypto.isCurrent = true;
-      cryptosToCreate.push(newCrypto);
+      await this.cryptoMarketService.createMany(cryptos);
+      return 'Seed executed';
+    } catch (error) {
+      console.log(JSON.stringify({ error }, null, 2));
+      return 'Seed executed with error';
     }
-
-    await this.cryptoCurrencyService.createMany(cryptosToCreate);
-
-    return 'Seed executed';
   }
 
   // public async executeSeed() {
@@ -122,9 +146,9 @@ export class SeedService {
   //   return 'Seed executed with simulated data';
   // }
 
-  @Cron('*/12 * * * * *')
-  async handleCron() {
-    console.log('Running seed');
-    await this.executeSeed();
-  }
+  // @Cron('*/12 * * * * *')
+  // async handleCron() {
+  //   console.log('Running seed');
+  //   await this.executeSeed();
+  // }
 }

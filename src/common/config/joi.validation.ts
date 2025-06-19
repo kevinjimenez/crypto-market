@@ -7,5 +7,5 @@ export const JoiValidationSchema = Joi.object({
   DB_PORT: Joi.number().required(),
   DB_USERNAME: Joi.string().required(),
   DB_PASSWORD: Joi.string().required(),
-  COIN_API: Joi.string().required(),
+  COINGECKO_API: Joi.string().required(),
 });

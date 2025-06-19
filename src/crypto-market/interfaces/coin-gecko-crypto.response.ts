@@ -1,4 +1,4 @@
-export interface CryptoResponse {
+export interface CoinGeckoCryptoResponse {
   id: string;
   symbol: string;
   name: string;

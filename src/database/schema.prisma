@@ -13,19 +13,19 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model CryptoCurrency {
+model crypto_market {
   id        String   @id @default(uuid()) @db.Uuid
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
   name      String   @db.VarChar(50)
   image     String
   symbol    String
-  currentPrice  Float
-  high1h  Float
-  low1h  Float
+  current_price  Float
+  high_1h  Float
+  low_1h  Float
   avg  Float
   signal String   @db.VarChar(1)
   trend  String
-  isCurrent  Boolean
+  is_current  Boolean
   tag  String
 }
