@@ -1,3 +1,4 @@
+import { crypto_market } from '@prisma/client';
 import { CreateCryptoMarketDto } from '../dto/create-crypto-market.dto';
 import { SIGNAL } from '../enums/signal.enum';
 import { TREND } from '../enums/trend.enum';
@@ -5,20 +6,41 @@ import { CoinGeckoCryptoResponse } from '../interfaces/coin-gecko-crypto.respons
 
 export const coinGeckoToCryptoMarketMapper = (
   coinGeckoCrypto: CoinGeckoCryptoResponse,
+  cryptoMarket?: crypto_market,
 ): CreateCryptoMarketDto => {
-  const avg = coinGeckoCrypto.current_price + coinGeckoCrypto.current_price / 2;
+  const newCryptoMarket = new CreateCryptoMarketDto();
 
-  return {
-    tag: coinGeckoCrypto.id,
-    name: coinGeckoCrypto.name,
-    avg,
-    current_price: coinGeckoCrypto.current_price,
-    image: coinGeckoCrypto.image,
-    high_1h: coinGeckoCrypto.current_price,
-    low_1h: coinGeckoCrypto.current_price,
-    symbol: coinGeckoCrypto.symbol,
-    signal: coinGeckoCrypto.current_price > avg ? SIGNAL.BUY : SIGNAL.SELL,
-    trend: TREND.SAME,
-    is_current: true,
-  };
+  // Set basic properties
+  newCryptoMarket.name = coinGeckoCrypto.name;
+  newCryptoMarket.image = coinGeckoCrypto.image;
+  newCryptoMarket.symbol = coinGeckoCrypto.symbol;
+  newCryptoMarket.current_price = coinGeckoCrypto.current_price;
+  newCryptoMarket.tag = coinGeckoCrypto.id;
+  newCryptoMarket.is_current = true;
+
+  // Initialize with last values or current price
+  newCryptoMarket.high_1h =
+    cryptoMarket?.high_1h ?? coinGeckoCrypto.current_price;
+  newCryptoMarket.low_1h =
+    cryptoMarket?.low_1h ?? coinGeckoCrypto.current_price;
+  newCryptoMarket.trend = cryptoMarket?.trend ?? TREND.SAME;
+
+  // Update trend and price boundaries
+  if (cryptoMarket) {
+    if (coinGeckoCrypto.current_price > cryptoMarket.current_price) {
+      newCryptoMarket.trend = TREND.UP;
+      newCryptoMarket.high_1h = coinGeckoCrypto.current_price;
+    } else if (coinGeckoCrypto.current_price < cryptoMarket.current_price) {
+      newCryptoMarket.trend = TREND.DOWN;
+      newCryptoMarket.low_1h = coinGeckoCrypto.current_price;
+    }
+  }
+
+  // Calculate average and signal
+  const avg = (newCryptoMarket.high_1h + newCryptoMarket.low_1h) / 2;
+  newCryptoMarket.avg = avg;
+  newCryptoMarket.signal =
+    coinGeckoCrypto.current_price > avg ? SIGNAL.BUY : SIGNAL.SELL;
+
+  return newCryptoMarket;
 };
