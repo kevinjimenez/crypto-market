@@ -10,7 +10,7 @@ import { CryptoMarketQueryDto } from './dto/crypto-market-query.dto';
 @Injectable()
 export class CryptoMarketService {
   private lastApiCallTime: number = 0;
-  private readonly MIN_TIME_BETWEEN_CALLS = 3000; // 2.5 seconds between calls
+  private readonly MIN_TIME_BETWEEN_CALLS = 3000;
   private readonly logger = new Logger(CryptoMarketService.name);
 
   constructor(
@@ -40,8 +40,17 @@ export class CryptoMarketService {
       const results = await this.cryptoMarketRepository.deleteAll();
       return results;
     } catch (error) {
-      console.log(error);
-      throw new InternalServerErrorException('Error creating user');
+      this.logger.error(
+        `Failed to delete all crypto market data: ${error.message}`,
+        error.stack,
+      );
+      throw new InternalServerErrorException(
+        'Failed to delete crypto market data. Please try again later.',
+        {
+          cause: error,
+          description: error.message,
+        },
+      );
     }
   }
 
@@ -86,7 +95,7 @@ export class CryptoMarketService {
           `Rate limit exceeded. Retrying after ${retryAfter} seconds`,
         );
 
-        // Usa setTimeout o un job externo para reintentar, no recursion directa
+        // Use setTimeout or an external job for retries, not direct recursion
         setTimeout(() => {
           void this.fetchAndProcessCryptoMarket();
         }, retryAfter * 1000);

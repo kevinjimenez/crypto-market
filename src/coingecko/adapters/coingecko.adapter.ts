@@ -1,8 +1,8 @@
+import { CoinGeckoAdapterInterface } from '@coingecko/interfaces/coingecko-adapter.interface';
+import { CoingeckoResponseInterface } from '@coingecko/interfaces/coingecko-response.interface';
 import { AxiosAdapter } from '@common/adapters/axios.adapter';
 import { EnvService } from '@common/services/env.service';
 import { Injectable } from '@nestjs/common';
-import { CoingeckoResponseInterface } from 'coingecko/interfaces/coingecko-response.interface';
-import { CoinGeckoAdapterInterface } from '../interfaces/coingecko-adapter.interface';
 
 @Injectable()
 export class CoingeckoAdapter implements CoinGeckoAdapterInterface {

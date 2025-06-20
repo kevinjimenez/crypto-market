@@ -1,8 +1,8 @@
+import { CoingeckoResponseInterface } from '@coingecko/interfaces/coingecko-response.interface';
 import { CreateCryptoMarketDto } from '@crypto-market/dto/create-crypto-market.dto';
 import { SIGNAL } from '@crypto-market/enums/signal.enum';
 import { TREND } from '@crypto-market/enums/trend.enum';
 import { crypto_market } from '@prisma/client';
-import { CoingeckoResponseInterface } from 'coingecko/interfaces/coingecko-response.interface';
 
 export const coingeckoToCryptoMarketMapper = (
   coinGeckoCrypto: CoingeckoResponseInterface,

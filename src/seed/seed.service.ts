@@ -1,7 +1,7 @@
+import { CoingeckoService } from '@coingecko/coingecko.service';
 import { CryptoMarketService } from '@crypto-market/crypto-market.service';
 import { coingeckoToCryptoMarketMapper } from '@crypto-market/utils/coingecko-to-crypto-market.mapper';
 import { Injectable } from '@nestjs/common';
-import { CoingeckoService } from 'coingecko/coingecko.service';
 
 @Injectable()
 export class SeedService {

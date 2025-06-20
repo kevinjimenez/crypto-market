@@ -1,8 +1,8 @@
+import { CoingeckoService } from '@coingecko/coingecko.service';
 import { ApiResponse } from '@common/interfaces/api-response.interface';
 import { DatabaseService } from '@database/database.service';
 import { Injectable, Logger } from '@nestjs/common';
 import { crypto_market, Prisma } from '@prisma/client';
-import { CoingeckoService } from 'coingecko/coingecko.service';
 import { CreateCryptoMarketDto } from './dto/create-crypto-market.dto';
 import { CryptoMarketQueryDto } from './dto/crypto-market-query.dto';
 import { coingeckoToCryptoMarketMapper } from './utils/coingecko-to-crypto-market.mapper';

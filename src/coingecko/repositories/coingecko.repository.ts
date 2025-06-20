@@ -1,7 +1,7 @@
+import { CoingeckoAdapter } from '@coingecko/adapters/coingecko.adapter';
+import { CoingeckoResponseInterface } from '@coingecko/interfaces/coingecko-response.interface';
 import { Adapters } from '@common/enums/adapters.enum';
 import { Injectable } from '@nestjs/common';
-import { CoingeckoResponseInterface } from 'coingecko/interfaces/coingecko-response.interface';
-import { CoingeckoAdapter } from '../adapters/coingecko.adapter';
 
 @Injectable()
 export class CoingeckoRepository {

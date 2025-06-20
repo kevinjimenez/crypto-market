@@ -1,6 +1,6 @@
+import { CryptoMarketModule } from '@crypto-market/crypto-market.module';
 import { Module } from '@nestjs/common';
 import { ScheduleModule } from '@nestjs/schedule';
-import { CryptoMarketModule } from '../crypto-market/crypto-market.module';
 import { CronController } from './cron.controller';
 import { CronService } from './cron.service';
 

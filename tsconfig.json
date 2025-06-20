@@ -11,11 +11,13 @@
     "outDir": "./dist",
     "baseUrl": "./src",
     "paths": {
+      "@coingecko/*": ["coingecko/*"],
       "@common/*": ["common/*"],
+      "@cron/*": ["cron/*"],
       "@crypto-market/*": ["crypto-market/*"],
       "@database/*": ["database/*"],
-      "@seed/*": ["seed/*"],
-      "@health/*": ["health/*"]
+      "@health/*": ["health/*"],
+      "@seed/*": ["seed/*"]
     },
     "incremental": true,
     "skipLibCheck": true,

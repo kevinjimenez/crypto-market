@@ -1,6 +1,6 @@
+import { CryptoMarketService } from '@crypto-market/crypto-market.service';
 import { Injectable, Logger } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
-import { CryptoMarketService } from '../crypto-market/crypto-market.service';
 
 @Injectable()
 export class CronService {
