@@ -1,8 +1,12 @@
-import { Module } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { AxiosAdapter } from './adapters/axios.adapter';
+import { EnvService } from './services/env.service';
 
+@Global()
 @Module({
-  providers: [AxiosAdapter],
-  exports: [AxiosAdapter],
+  imports: [ConfigModule],
+  providers: [AxiosAdapter, EnvService],
+  exports: [AxiosAdapter, EnvService],
 })
 export class CommonModule {}
