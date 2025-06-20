@@ -3,7 +3,6 @@ import {
   InternalServerErrorException,
   Logger,
 } from '@nestjs/common';
-import { Cron } from '@nestjs/schedule';
 import { CryptoMarketRepository } from './crypto-market.repository';
 import { CreateCryptoMarketDto } from './dto/create-crypto-market.dto';
 import { CryptoMarketQueryDto } from './dto/crypto-market-query.dto';
@@ -11,7 +10,7 @@ import { CryptoMarketQueryDto } from './dto/crypto-market-query.dto';
 @Injectable()
 export class CryptoMarketService {
   private lastApiCallTime: number = 0;
-  private readonly MIN_TIME_BETWEEN_CALLS = 2500; // 2.5 seconds between calls
+  private readonly MIN_TIME_BETWEEN_CALLS = 3000; // 2.5 seconds between calls
   private readonly logger = new Logger(CryptoMarketService.name);
 
   constructor(
@@ -46,9 +45,12 @@ export class CryptoMarketService {
     }
   }
 
-  @Cron('*/3 * * * * *')
-  async syncCryptoMarketJob() {
-    await this.fetchAndProcessCryptoMarket();
+  /**
+   * Syncs the cryptocurrency market
+   * This method is called by CronService
+   */
+  public async syncCryptoMarket() {
+    return this.fetchAndProcessCryptoMarket();
   }
 
   private async fetchAndProcessCryptoMarket() {

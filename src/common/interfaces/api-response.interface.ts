@@ -1,5 +1,5 @@
 export interface ApiResponse<T> {
-  data: T | T[];
+  data: T;
   meta?: Meta;
 }
 

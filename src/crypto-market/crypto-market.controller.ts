@@ -1,6 +1,6 @@
-import { FiltersDto } from '@common/dtos/filters.dto';
 import { Controller, Get, Param, Query } from '@nestjs/common';
 import { CryptoMarketService } from './crypto-market.service';
+import { CryptoMarketQueryDto } from './dto/crypto-market-query.dto';
 
 @Controller('crypto-market')
 export class CryptoMarketController {
@@ -12,7 +12,7 @@ export class CryptoMarketController {
   }
 
   @Get()
-  findAll(@Query() filters: FiltersDto) {
-    return this.cryptoMarketService.findAll(filters);
+  findAll(@Query() query: CryptoMarketQueryDto) {
+    return this.cryptoMarketService.findAll(query);
   }
 }
