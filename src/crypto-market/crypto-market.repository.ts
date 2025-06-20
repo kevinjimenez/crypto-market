@@ -1,20 +1,19 @@
-import { AxiosAdapter } from '@common/adapters/axios.adapter';
 import { ApiResponse } from '@common/interfaces/api-response.interface';
 import { DatabaseService } from '@database/database.service';
 import { Injectable, Logger } from '@nestjs/common';
 import { crypto_market, Prisma } from '@prisma/client';
+import { CoingeckoService } from 'coingecko/coingecko.service';
 import { CreateCryptoMarketDto } from './dto/create-crypto-market.dto';
 import { CryptoMarketQueryDto } from './dto/crypto-market-query.dto';
-import { CoinGeckoCryptoResponse } from './interfaces/coin-gecko-crypto.response';
-import { coinGeckoToCryptoMarketMapper } from './utils/coin-gecko-to-crypto-market.mapper';
+import { coingeckoToCryptoMarketMapper } from './utils/coingecko-to-crypto-market.mapper';
 
 @Injectable()
 export class CryptoMarketRepository {
   private readonly BATCH_SIZE = 100;
   private readonly logger = new Logger(CryptoMarketRepository.name);
   constructor(
-    private readonly http: AxiosAdapter,
     private readonly databaseService: DatabaseService,
+    private readonly coingeckoService: CoingeckoService,
   ) {}
 
   public createMany(payload: Prisma.crypto_marketCreateInput[]) {
@@ -120,9 +119,7 @@ export class CryptoMarketRepository {
               where: { is_current: true },
               data: { is_current: false },
             }),
-            this.http.get<CoinGeckoCryptoResponse[]>(
-              process.env.COINGECKO_API ?? '',
-            ),
+            this.coingeckoService.getCoinMarkets(),
           ]);
 
           if (!data?.length) {
@@ -168,7 +165,7 @@ export class CryptoMarketRepository {
            */
           for (const crypto of data) {
             const previousCrypto = mapPreviousCrypto.get(crypto.id);
-            const newCrypto = coinGeckoToCryptoMarketMapper(
+            const newCrypto = coingeckoToCryptoMarketMapper(
               crypto,
               previousCrypto,
             );

@@ -5,7 +5,7 @@ import { CryptoMarketService } from '../crypto-market/crypto-market.service';
 @Injectable()
 export class CronService {
   private readonly logger = new Logger(CronService.name);
-  private isCronActive: boolean = true;
+  private isCronActive: boolean = false;
 
   constructor(private readonly cryptoMarketService: CryptoMarketService) {}
 

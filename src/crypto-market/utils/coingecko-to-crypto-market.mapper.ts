@@ -1,11 +1,11 @@
 import { CreateCryptoMarketDto } from '@crypto-market/dto/create-crypto-market.dto';
 import { SIGNAL } from '@crypto-market/enums/signal.enum';
 import { TREND } from '@crypto-market/enums/trend.enum';
-import { CoinGeckoCryptoResponse } from '@crypto-market/interfaces/coin-gecko-crypto.response';
 import { crypto_market } from '@prisma/client';
+import { CoingeckoResponseInterface } from 'coingecko/interfaces/coingecko-response.interface';
 
-export const coinGeckoToCryptoMarketMapper = (
-  coinGeckoCrypto: CoinGeckoCryptoResponse,
+export const coingeckoToCryptoMarketMapper = (
+  coinGeckoCrypto: CoingeckoResponseInterface,
   cryptoMarket?: crypto_market,
 ): CreateCryptoMarketDto => {
   const newCryptoMarket = new CreateCryptoMarketDto();

@@ -9,6 +9,7 @@ import { CryptoMarketModule } from './crypto-market/crypto-market.module';
 import { DatabaseModule } from './database/database.module';
 import { HealthModule } from './health/health.module';
 import { SeedModule } from './seed/seed.module';
+import { CoingeckoModule } from './coingecko/coingecko.module';
 
 @Module({
   imports: [
@@ -22,6 +23,8 @@ import { SeedModule } from './seed/seed.module';
     SeedModule,
     CryptoMarketModule,
     CronModule,
+    // external data
+    CoingeckoModule,
   ],
 })
 export class AppModule implements NestModule {

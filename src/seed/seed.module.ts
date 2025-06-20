@@ -1,10 +1,11 @@
 import { CryptoMarketModule } from '@crypto-market/crypto-market.module';
 import { Module } from '@nestjs/common';
+import { CoingeckoModule } from 'coingecko/coingecko.module';
 import { SeedController } from './seed.controller';
 import { SeedService } from './seed.service';
 
 @Module({
-  imports: [CryptoMarketModule],
+  imports: [CoingeckoModule, CryptoMarketModule],
   controllers: [SeedController],
   providers: [SeedService],
 })

@@ -1,4 +1,4 @@
-export interface CoinGeckoCryptoResponse {
+export interface CoingeckoResponseInterface {
   id: string;
   symbol: string;
   name: string;
@@ -23,11 +23,11 @@ export interface CoinGeckoCryptoResponse {
   atl: number;
   atl_change_percentage: number;
   atl_date: Date;
-  roi: Roi | null;
+  roi: RoiInterface | null;
   last_updated: Date;
 }
 
-interface Roi {
+interface RoiInterface {
   times: number;
   currency: string;
   percentage: number;

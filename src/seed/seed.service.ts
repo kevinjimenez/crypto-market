@@ -1,30 +1,21 @@
-import { AxiosAdapter } from '@common/adapters/axios.adapter';
-import { EnvService } from '@common/services/env.service';
 import { CryptoMarketService } from '@crypto-market/crypto-market.service';
-import { CoinGeckoCryptoResponse } from '@crypto-market/interfaces/coin-gecko-crypto.response';
-import { coinGeckoToCryptoMarketMapper } from '@crypto-market/utils/coin-gecko-to-crypto-market.mapper';
+import { coingeckoToCryptoMarketMapper } from '@crypto-market/utils/coingecko-to-crypto-market.mapper';
 import { Injectable } from '@nestjs/common';
+import { CoingeckoService } from 'coingecko/coingecko.service';
 
 @Injectable()
 export class SeedService {
   constructor(
-    private readonly http: AxiosAdapter,
     private readonly cryptoMarketService: CryptoMarketService,
-    private readonly envService: EnvService,
+    private readonly coingeckoService: CoingeckoService,
   ) {}
 
   public async executeSeed() {
-    const COINGECKO_API = this.envService.getConfigValue('coingeckoApi')!;
-
     try {
       await this.cryptoMarketService.deleteAll();
 
-      const data =
-        await this.http.get<CoinGeckoCryptoResponse[]>(COINGECKO_API);
-
-      const cryptos = data.map((crypto) =>
-        coinGeckoToCryptoMarketMapper(crypto),
-      );
+      const coins = await this.coingeckoService.getCoinMarkets();
+      const cryptos = coins.map((coin) => coingeckoToCryptoMarketMapper(coin));
 
       await this.cryptoMarketService.createMany(cryptos);
       return 'Seed executed';
