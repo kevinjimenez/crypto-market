@@ -77,7 +77,7 @@ export class CryptoMarketService {
 
       const { meta } = await this.findAll({});
 
-      if (meta && meta.total > 0) {
+      if (meta?.total && meta.total > 0) {
         this.logger.log(`Found ${meta.total} crypto market entries`);
         await this.cryptoMarketRepository.ingestCryptoMarket();
       } else {

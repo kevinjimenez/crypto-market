@@ -27,11 +27,30 @@ export const coingeckoToCryptoMarketMapper = (
 
   // Update trend and price boundaries
   if (cryptoMarket) {
+    // Update trend
     if (coinGeckoCrypto.current_price > cryptoMarket.current_price) {
       newCryptoMarket.trend = TREND.UP;
-      newCryptoMarket.high_1h = coinGeckoCrypto.current_price;
     } else if (coinGeckoCrypto.current_price < cryptoMarket.current_price) {
       newCryptoMarket.trend = TREND.DOWN;
+    }
+
+    // Update 1h high and low
+    const oneHourAgo = new Date();
+    oneHourAgo.setHours(oneHourAgo.getHours() - 1);
+
+    // If last update was within 1 hour, compare with previous high/low
+    if (cryptoMarket.updated_at > oneHourAgo) {
+      newCryptoMarket.high_1h = Math.max(
+        Number(cryptoMarket.high_1h),
+        Number(coinGeckoCrypto.current_price),
+      );
+      newCryptoMarket.low_1h = Math.min(
+        Number(cryptoMarket.low_1h),
+        Number(coinGeckoCrypto.current_price),
+      );
+    } else {
+      // If more than 1 hour has passed, reset with current price
+      newCryptoMarket.high_1h = coinGeckoCrypto.current_price;
       newCryptoMarket.low_1h = coinGeckoCrypto.current_price;
     }
   }

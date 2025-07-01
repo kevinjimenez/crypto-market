@@ -50,15 +50,24 @@ export class CryptoMarketRepository {
         };
       }
 
-      const [data, total] = await Promise.all([
-        this.databaseService.crypto_market.findMany({
-          where,
-          skip,
-          take: limit,
-          orderBy: { created_at: 'desc' },
-        }),
-        this.databaseService.crypto_market.count({ where }),
-      ]);
+      // First, get the latest record for each cryptocurrency
+      const data = await this.databaseService.crypto_market.findMany({
+        where,
+        skip,
+        take: limit,
+        distinct: ['name'],
+        orderBy: {
+          created_at: 'desc',
+        },
+      });
+
+      // Get the total count of unique cryptocurrencies
+      const uniqueCount = await this.databaseService.crypto_market.groupBy({
+        where,
+        by: ['name'],
+      });
+
+      const total = uniqueCount.length;
 
       return {
         data,
@@ -78,19 +87,35 @@ export class CryptoMarketRepository {
     }
   }
 
-  public findByTag(tag: string): Promise<crypto_market[]> {
-    return this.databaseService.crypto_market.findMany({
-      where: {
-        tag,
-      },
-      orderBy: { created_at: 'desc' },
-    });
+  public async findByTag(tag: string): Promise<ApiResponse<crypto_market[]>> {
+    try {
+      const data = await this.databaseService.crypto_market.findMany({
+        where: {
+          tag,
+        },
+        orderBy: { created_at: 'desc' },
+      });
+
+      return {
+        data,
+        meta: {
+          total: data.length,
+        },
+      };
+    } catch (error) {
+      this.logger.error(
+        `Error fetching crypto markets by tag: ${error.message}`,
+        error.stack,
+      );
+      throw new Error('Failed to fetch crypto markets by tag');
+    }
   }
 
   public async deleteAll() {
     try {
       await this.databaseService.crypto_market.deleteMany({});
-      return 'delete all';
+
+      return true;
     } catch (error) {
       this.logger.error(
         `Error deleting crypto markets: ${error.message}`,
