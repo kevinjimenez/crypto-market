@@ -6,15 +6,28 @@ import { crypto_market, Prisma } from '@prisma/client';
 import { CreateCryptoMarketDto } from './dto/create-crypto-market.dto';
 import { CryptoMarketQueryDto } from './dto/crypto-market-query.dto';
 import { coingeckoToCryptoMarketMapper } from './utils/coingecko-to-crypto-market.mapper';
+import { EnvService } from '@common/services/env.service';
 
 @Injectable()
 export class CryptoMarketRepository {
-  private readonly BATCH_SIZE = 100;
   private readonly logger = new Logger(CryptoMarketRepository.name);
+  private readonly BATCH_SIZE: number;
+  private readonly PAGINATION_LIMIT: number;
+  private readonly PAGINATION_PAGE: number;
   constructor(
     private readonly databaseService: DatabaseService,
     private readonly coingeckoService: CoingeckoService,
-  ) {}
+    private readonly envService: EnvService,
+  ) {
+    this.BATCH_SIZE = Number(this.envService.getConfigValue('batchSize'));
+    console.log(this.envService.getConfigValue('paginationLimit'));
+    this.PAGINATION_LIMIT = Number(
+      this.envService.getConfigValue('paginationLimit'),
+    );
+    this.PAGINATION_PAGE = Number(
+      this.envService.getConfigValue('paginationPage'),
+    );
+  }
 
   public createMany(payload: Prisma.crypto_marketCreateInput[]) {
     return this.databaseService.crypto_market.createMany({ data: payload });
@@ -24,8 +37,13 @@ export class CryptoMarketRepository {
     query: CryptoMarketQueryDto,
   ): Promise<ApiResponse<crypto_market[]>> {
     try {
-      const { page = 1, limit = 5, ...rest } = query;
+      const {
+        page = this.PAGINATION_PAGE,
+        limit = this.PAGINATION_LIMIT,
+        ...rest
+      } = query;
       const skip = (page - 1) * limit;
+      console.log({ page, limit, skip });
 
       const where: Prisma.crypto_marketWhereInput = {
         is_current: true,

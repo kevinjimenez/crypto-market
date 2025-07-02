@@ -7,4 +7,7 @@ export const EnvConfiguration = () => ({
   dbUsername: process.env.DB_USERNAME,
   dbPassword: process.env.DB_PASSWORD,
   coingeckoApi: process.env.COINGECKO_API,
+  batchSize: parseInt(process.env.BATCH_SIZE ?? '100', 10),
+  paginationLimit: parseInt(process.env.PAGINATION_LIMIT ?? '5', 10),
+  paginationPage: parseInt(process.env.PAGINATION_PAGE ?? '1', 10),
 });
