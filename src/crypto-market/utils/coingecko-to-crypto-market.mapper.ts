@@ -10,13 +10,14 @@ export const coingeckoToCryptoMarketMapper = (
 ): CreateCryptoMarketDto => {
   const newCryptoMarket = new CreateCryptoMarketDto();
 
-  // Set basic properties
-  newCryptoMarket.name = coinGeckoCrypto.name;
-  newCryptoMarket.image = coinGeckoCrypto.image;
-  newCryptoMarket.symbol = coinGeckoCrypto.symbol;
-  newCryptoMarket.current_price = coinGeckoCrypto.current_price;
-  newCryptoMarket.tag = coinGeckoCrypto.id;
+  // Set basic properties with length validation
+  newCryptoMarket.name = coinGeckoCrypto.name?.substring(0, 50) || ''; // Max 50 chars
+  newCryptoMarket.image = coinGeckoCrypto.image || '';
+  newCryptoMarket.symbol = (coinGeckoCrypto.symbol || '').substring(0, 20); // Max 20 chars
+  newCryptoMarket.current_price = coinGeckoCrypto.current_price || 0;
+  newCryptoMarket.tag = (coinGeckoCrypto.id || '').substring(0, 100); // Max 100 chars
   newCryptoMarket.is_current = true;
+  newCryptoMarket.signal = '='; // Default value
 
   // Initialize with last values or current price
   newCryptoMarket.high_1h =
