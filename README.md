@@ -1,73 +1,108 @@
 <p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
+  <img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" />
+  <h1 align="center">API de Criptomonedas</h1>
 </p>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
+<p align="center">
+  <a href="https://nodejs.org/" target="_blank">
+    <img src="https://img.shields.io/badge/Node.js-14.x+-339933?style=flat-square&logo=node.js" alt="Node.js Version" />
+  </a>
+  <a href="https://www.npmjs.com/package/@nestjs/core" target="_blank">
+    <img src="https://img.shields.io/npm/v/@nestjs/core/latest.svg?style=flat-square" alt="NestJS Version" />
+  </a>
+  <a href="https://github.com/nestjs/nest/blob/master/LICENSE" target="_blank">
+    <img src="https://img.shields.io/npm/l/@nestjs/core.svg?style=flat-square" alt="License" />
+  </a>
 </p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
-## Description
+## Descripción
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+API RESTful construida con NestJS para obtener información en tiempo real sobre criptomonedas. Esta API proporciona datos actualizados de precios, volúmenes y estadísticas del mercado de criptomonedas.
 
-## Project setup
+## Demo en Vivo
 
-```bash
-$ npm install
+Puedes probar la API en producción aquí: [https://crypto-market-6dn5.onrender.com](https://crypto-market-6dn5.onrender.com)
+
+### Estado del Servidor
+
+Si el servidor está inactivo (en estado sleep), la primera solicitud puede tardar unos segundos en responder mientras se reactiva. Puedes verificar el estado del servidor en el siguiente endpoint:
+
+```
+GET /health
 ```
 
-## Compile and run the project
+Este endpoint devolverá el estado actual del servidor y sus dependencias.
+
+## Características
+
+- Obtener listado de criptomonedas con información actualizada
+- Consultar detalles específicos de cada criptomoneda
+- Estadísticas del mercado en tiempo real
+- Filtrado y ordenamiento de resultados
+- Documentación de la API disponible en `/api`
+
+## Instalación
 
 ```bash
-# development
-$ npm run start
+# Clonar el repositorio
+$ git clone [URL_DEL_REPOSITORIO]
 
-# watch mode
+# Instalar dependencias
+$ npm install
+
+# Configurar variables de entorno
+$ cp .env.example .env
+```
+
+## Configuración
+
+Crea un archivo `.env` en la raíz del proyecto con las siguientes variables:
+
+```env
+PORT=3000
+NODE_ENV=development
+# Agrega aquí tus claves de API si son necesarias
+```
+
+## Ejecución
+
+```bash
+# Modo desarrollo
 $ npm run start:dev
 
-# production mode
+# Modo producción
+$ npm run build
 $ npm run start:prod
 ```
 
-## Run tests
+## Documentación de la API
+
+La documentación interactiva de la API está disponible en:
+- `/api` - Documentación Swagger
+- `/graphql` - Playground de GraphQL (si está habilitado)
+
+## Pruebas
 
 ```bash
-# unit tests
+# Ejecutar pruebas unitarias
 $ npm run test
 
-# e2e tests
+# Ejecutar pruebas e2e
 $ npm run test:e2e
 
-# test coverage
+# Ver cobertura de pruebas
 $ npm run test:cov
 ```
 
-## Deployment
+## Contribución
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+Las contribuciones son bienvenidas. Por favor, lee las [guías de contribución](CONTRIBUTING.md) para más detalles.
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+## Licencia
 
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
-```
+Este proyecto está bajo la Licencia MIT - ver el archivo [LICENSE](LICENSE) para más detalles.
 
+---
 With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
 
 ## Resources
